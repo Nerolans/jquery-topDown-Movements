@@ -26,7 +26,7 @@
         var mouse_y
         var toMove_x = 0;
         var toMove_y = 0;
-        var speed = 200;
+        var speed = 150;
 
         var newValx;
         var newValy;
@@ -101,8 +101,8 @@
             var caseNumber = 0;
             
             if (valx < 0 && valy < 0){caseNumber = 1}
-            if (valx < 0 && valy > 0){caseNumber = 2}
-            if (valx > 0 && valy < 0){caseNumber = 3}
+            if (valx <= 0 && valy >= 0){caseNumber = 2}
+            if (valx >= 0 && valy <= 0){caseNumber = 3}
             if (valx > 0 && valy > 0){caseNumber = 4}
 
             valx = Math.abs(valx);
