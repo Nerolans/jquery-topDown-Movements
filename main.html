@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>RANDOM</title>
+</head>
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <section>
+        <div id ="backgroundfront">
+            <div id="backgroundback">
+                <div id="pointer"></div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        //Look at the mouse
+        var img = $('#pointer');
+        var offset = img.offset();
+        var loop;
+        var boolean = false;
+        var count = 0;
+        var mouse_x
+        var mouse_y
+        var toMove_x = 0;
+        var toMove_y = 0;
+        var speed = 200;
+
+        var newValx;
+        var newValy;
+
+        var keyWpressed = false;
+
+        function mouse(evt) {
+            var center_x = (1180) + (img.width() / 2);
+            var center_y = (535) + (img.height() / 2);
+            mouse_x = evt.pageX;
+            mouse_y = evt.pageY;
+            var radians = Math.atan2(mouse_x - center_x, mouse_y - center_y);
+            var degree = (radians * (180 / Math.PI) * -1) + 90;
+            img.css('-moz-transform', 'rotate(' + degree + 'deg)');
+            img.css('-webkit-transform', 'rotate(' + degree + 'deg)');
+            img.css('-o-transform', 'rotate(' + degree + 'deg)');
+            img.css('-ms-transform', 'rotate(' + degree + 'deg)');
+        }
+        $(document).mousemove(function (e) {
+            $(document).mousemove(mouse);
+        });
+
+        $(document).keypress(function(event) {
+            var key = (event.keyCode ? event.keyCode : event.which);
+            if (key == '119')
+            {
+                keyWpressed = true;
+                if(boolean == false)
+                {loop = setInterval(anim, 28);}
+                boolean = true; 
+
+                if(keyWpressed == true)
+                {
+                    caseNumber = speedCalc(mouse_x -1310, mouse_y -630);
+                    $("#backgroundback").stop();
+                    $("#pointer").stop();
+                    if(caseNumber ==1)
+                    {
+                        $("#backgroundback").animate({left: '+='+ newValy, top: '+='+ newValx}, speed);
+                        $("#pointer").animate({left: '-='+newValy, top: '-='+newValx}, speed);
+                    }
+                    if(caseNumber ==2)
+                    {
+                        $("#backgroundback").animate({left: '+='+ newValy, top: '-='+ newValx}, speed);
+                        $("#pointer").animate({left: '-='+newValy, top: '+='+newValx}, speed);
+                    }
+                    if(caseNumber ==3)
+                    {
+                        $("#backgroundback").animate({left: '-='+ newValy, top: '+='+ newValx}, speed);
+                        $("#pointer").animate({left: '+='+newValy, top: '-='+newValx}, speed);
+                    }
+                    if(caseNumber ==4)
+                    {
+                        $("#backgroundback").animate({left: '-='+ newValy, top: '-='+ newValx}, speed);
+                        $("#pointer").animate({left: '+='+newValy, top: '+='+newValx}, speed);
+                    }
+                    
+                } 
+            }      
+        }); 
+
+        $(document).keyup(function(event) { 
+            clearInterval(loop);
+            boolean = false;
+            keyWpressed = false; 
+            $("#backgroundback").stop();
+            $("#pointer").stop();
+        }); 
+
+        function speedCalc(valx, valy){
+            var pourcentage = 0; 
+            var caseNumber = 0;
+            
+            if (valx < 0 && valy < 0){caseNumber = 1}
+            if (valx < 0 && valy > 0){caseNumber = 2}
+            if (valx > 0 && valy < 0){caseNumber = 3}
+            if (valx > 0 && valy > 0){caseNumber = 4}
+
+            valx = Math.abs(valx);
+            valy = Math.abs(valy);
+
+            if (valx <= valy)
+            {
+                pourcentage = valx*100/valy;
+                newValx = 100 - pourcentage;
+                newValy = pourcentage;
+            }
+            else
+            {
+                pourcentage = valy*100/valx;
+                newValy = 100 - pourcentage;
+                newValx = pourcentage;
+            }
+            return caseNumber;
+        }
+        //sprite animation
+        function anim() {          
+            count = count+1;
+            if(count==20){count=0;}
+            img.css('background-image', 'url(sprites/Top_down_Survivor/handgun/move/survivor-move_handgun_'+count+'.png)');
+        }
+    </script>
+    <style>
+        body{margin:0px;}
+        section{
+            background-color: rosybrown;
+            height: 1343px;
+            width: 2560px;
+            }
+
+        #backgroundfront {
+            overflow:hidden;
+            cursor: crosshair;
+            position: absolute;
+            width: 2560px;
+            height: 1343px;
+        }
+        
+        #backgroundback {
+            width: 7680px;
+            height: 4029px;
+            position: absolute;
+            left:0px;
+            top:0px;
+            background-image: url("WoodPlank.jpg");
+        }
+
+        #pointer {
+            height:150px;
+            position:absolute;
+            top:580px;
+            width:150px;
+            background-image: url("sprites/Top_down_Survivor/flashlight/move/survivor-move_flashlight_0.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: absolute;
+            left:1215px;
+            }
+    </style>
+</body>
+</html>
